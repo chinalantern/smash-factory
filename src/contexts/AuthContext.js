@@ -6,18 +6,19 @@ const AuthContext = React.createContext()
 
 export const useAuth = () => useContext(AuthContext)
 
-//  manage the user's data
-export const AuthProvider = ({ children }) => {
+
+export const AuthProvider = ({ children }) => { // manage user's data
 
     const[loading, setLoading] = useState(true)
-    const[user, setUser] = useState({})
+    const[user, setUser] = useState(null)
     const history = useHistory()    // to re-navigate
 
     useEffect(() => { 
         auth.onAuthStateChanged((user) => { // get user from firebase auth
             setUser(user)
             setLoading(false)
-            history.push('/chats')  // router-dom navigate to chats
+
+            if(user) history.push('/chats')  // router-dom navigate to chats
         })
         
     }, [user, history]) // whenever adding user or re-navigating
